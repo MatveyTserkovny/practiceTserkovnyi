@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyChain - Блокчейн на Java</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #222;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            color: #111827;
+        }
+
+        header h1 {
+            color: white;
+            margin: 0;
+        }
+
+        section {
+            background: white;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.08);
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #00ff88;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #e5e7eb;
+        }
+
+        blockquote {
+            background: #f3f4f6;
+            border-left: 5px solid #2563eb;
+            margin: 15px 0;
+            padding: 15px;
+            font-style: italic;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+            background: #111827;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>PolyChain</h1>
+    <p>Реализация простого блокчейна на Java</p>
+</header>
+
+<div class="container">
+
+    <section>
+        <h1>Введение</h1>
+
+        <h2>Цель проекта</h2>
+
+        <p>
+            Изучить принципы работы блокчейна и реализовать его упрощённую версию на Java.
+        </p>
+
+        <h2>Задачи</h2>
+
+        <ul>
+            <li>Изучить предметную область (блокчейн)</li>
+            <li>Реализовать базовую архитектуру</li>
+            <li>Добавить механизм Proof-of-Work</li>
+            <li>Проверить целостность цепочки</li>
+            <li>Задокументировать проект</li>
+            <li>Визуализировать архитектуру</li>
+        </ul>
+    </section>
+
+    <section>
+        <h1>Исследование предметной области</h1>
+
+        <h2>Что такое блокчейн</h2>
+
+        <blockquote>
+            Связанная цепочка блоков, где каждый блок содержит hash предыдущего
+        </blockquote>
+
+        <h2>Основные компоненты</h2>
+
+        <table>
+            <tr>
+                <th>Компонент</th>
+                <th>Описание</th>
+            </tr>
+
+            <tr>
+                <td>Block</td>
+                <td>Хранит данные</td>
+            </tr>
+
+            <tr>
+                <td>Hash</td>
+                <td>Уникальный идентификатор</td>
+            </tr>
+
+            <tr>
+                <td>Previous Hash</td>
+                <td>Связь между блоками</td>
+            </tr>
+
+            <tr>
+                <td>Nonce</td>
+                <td>Для майнинга</td>
+            </tr>
+
+            <tr>
+                <td>Blockchain</td>
+                <td>Список блоков</td>
+            </tr>
+        </table>
+
+        <h2>Схема блокчейна</h2>
+
+        <pre><code>
+[Block 1] → [Block 2] → [Block 3]
+   hash1      hash2        hash3
+     ↓          ↓            ↓
+ previousHash previousHash previousHash
+        </code></pre>
+
+        <h2>Иллюстрация 1</h2>
+
+        <pre><code>
++---------+     +---------+     +---------+
+| Block 1 | --> | Block 2 | --> | Block 3 |
++---------+     +---------+     +---------+
+| hash    |     | hash    |     | hash    |
+| prev=0  |     | prev=h1 |     | prev=h2 |
++---------+     +---------+     +---------+
+        </code></pre>
+
+        <h2>Proof-of-Work (майнинг)</h2>
+
+        <blockquote>
+            Найти такой hash, который начинается с N нулей
+        </blockquote>
+
+        <h2>Иллюстрация 2</h2>
+
+        <pre><code>
+nonce = 0 → hash = A93F...
+nonce = 1 → hash = B12A...
+...
+nonce = 5321 → hash = 0000F3AB ✅
+        </code></pre>
+    </section>
+
+    <section>
+        <h1>Техническое руководство</h1>
+
+        <h2>Шаг 1. Создание проекта</h2>
+
+        <pre><code>
+PolyChain
+        </code></pre>
+
+        <h3>Структура</h3>
+
+        <pre><code>
+src/
+ ├── Block.java
+ └── PolyChain.java
+        </code></pre>
+
+        <h2>Шаг 2. Создание класса Block</h2>
+
+        <pre><code>
+import java.util.Date;
+
+public class Block {
+    public String hash;
+    public String previousHash;
+    public String data;
+    public long timeStamp;
+    public int nonce;
+
+    public Block(String data, String previousHash) {
+        this.data = data;
+        this.previousHash = previousHash;
+        this.timeStamp = new Date().getTime();
+        this.hash = calculateHash();
+    }
+}
+        </code></pre>
+
+        <h2>Шаг 3. Хеширование</h2>
+
+        <pre><code>
+public String calculateHash() {
+    String input = previousHash + timeStamp + data + nonce;
+    return StringUtil.applySha256(input);
+}
+        </code></pre>
+
+        <h2>Иллюстрация 3</h2>
+
+        <pre><code>
+hash = SHA256(previousHash + timeStamp + data + nonce)
+        </code></pre>
+
+        <h2>Шаг 4. Майнинг блока</h2>
+
+        <pre><code>
+public void mineBlock(int difficulty) {
+    String target = new String(new char[difficulty]).replace('\0', '0');
+
+    while(!hash.substring(0, difficulty).equals(target)) {
+        nonce++;
+        hash = calculateHash();
+    }
+}
+        </code></pre>
+
+        <h2>Шаг 5. Создание блокчейна</h2>
+
+        <pre><code>
+import java.util.ArrayList;
+
+public class PolyChain {
+    public static ArrayList&lt;Block&gt; blockchain = new ArrayList&lt;&gt;();
+    public static int difficulty = 4;
+
+    public static void main(String[] args) {
+
+        blockchain.add(new Block("First block", "0"));
+        blockchain.add(new Block("Second block", blockchain.get(0).hash));
+        blockchain.add(new Block("Third block", blockchain.get(1).hash));
+    }
+}
+        </code></pre>
+
+        <h2>Иллюстрация 4 (UML)</h2>
+
+        <pre><code>
++------------------+
+|      Block       |
++------------------+
+| hash             |
+| previousHash     |
+| data             |
+| timeStamp        |
+| nonce            |
++------------------+
+| calculateHash()  |
+| mineBlock()      |
++------------------+
+        </code></pre>
+
+        <h2>Шаг 6. Проверка целостности</h2>
+
+        <pre><code>
+public static Boolean isChainValid() {
+    Block currentBlock;
+    Block previousBlock;
+
+    for(int i=1; i&lt;blockchain.size(); i++) {
+        currentBlock = blockchain.get(i);
+        previousBlock = blockchain.get(i-1);
+
+        if(!currentBlock.hash.equals(currentBlock.calculateHash())) {
+            return false;
+        }
+
+        if(!currentBlock.previousHash.equals(previousBlock.hash)) {
+            return false;
+        }
+    }
+    return true;
+}
+        </code></pre>
+
+        <h2>Иллюстрация 5</h2>
+
+        <pre><code>
+Block2.previousHash == Block1.hash ✔
+Block3.previousHash == Block2.hash ✔
+        </code></pre>
+    </section>
+
+    <section>
+        <h1>Результат работы</h1>
+
+        <ul>
+            <li>создаёт блоки</li>
+            <li>майнит их</li>
+            <li>проверяет цепочку</li>
+        </ul>
+    </section>
+
+    <section>
+        <h1>Модификация проекта</h1>
+
+        <h2>Транзакции</h2>
+
+        <pre><code>
+class Transaction {
+    String from;
+    String to;
+    double amount;
+}
+        </code></pre>
+
+        <h2>Подписи</h2>
+
+        <ul>
+            <li>добавлена проверка авторства</li>
+        </ul>
+
+        <h2>P2P сеть</h2>
+
+        <ul>
+            <li>несколько узлов</li>
+            <li>синхронизация цепочек</li>
+        </ul>
+
+        <h2>Иллюстрация 6</h2>
+
+        <pre><code>
+Node A ←→ Node B ←→ Node C
+   ↓          ↓         ↓
+ blockchain blockchain blockchain
+        </code></pre>
+
+        <h2>Иллюстрация 7</h2>
+
+        <pre><code>
+User → Blockchain → Block → Hash
+        </code></pre>
+    </section>
+
+    <section>
+        <h1>Вывод</h1>
+
+        <ul>
+            <li>изучен блокчейн</li>
+            <li>реализована модель</li>
+            <li>добавлен майнинг</li>
+        </ul>
+    </section>
+
+</div>
+
+<footer>
+    PolyChain © 2026
+</footer>
+
+</body>
+</html>
