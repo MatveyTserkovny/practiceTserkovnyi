@@ -257,7 +257,7 @@ Block3.previousHash == Block2.hash ✔
 
 ---
 
-# 5. Модификация проекта (через год)
+# 5. Модификация проекта 
 
 ## Добавленные функции
 
@@ -273,7 +273,7 @@ class Transaction {
 
 ---
 
-### 2. Подписи (упрощённо)
+### 2. Подписи
 
 * добавлена проверка авторства
 
@@ -293,32 +293,6 @@ Node A ←→ Node B ←→ Node C
    ↓          ↓         ↓
  blockchain blockchain blockchain
 ```
-
----
-
-# 6. Git-репозиторий
-
-Структура:
-
-```
-/blockchain-project
- ├── src/
- ├── docs/
- ├── README.md
- ├── diagrams/
- └── presentation/
-```
-
----
-
-# 7. HTML-представление
-
-Использовать:
-
-* GitHub Pages
-* Markdown → HTML
-
-
 
 ---
 
