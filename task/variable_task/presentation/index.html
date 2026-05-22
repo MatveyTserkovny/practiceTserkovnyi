@@ -174,24 +174,13 @@
 
         <img src="/task/variable_task/img/1.drawio.png">
 
-        <h2>Иллюстрация 1</h2>
-
-        <pre><code>
-+---------+     +---------+     +---------+
-| Block 1 | --> | Block 2 | --> | Block 3 |
-+---------+     +---------+     +---------+
-| hash    |     | hash    |     | hash    |
-| prev=0  |     | prev=h1 |     | prev=h2 |
-+---------+     +---------+     +---------+
-        </code></pre>
-
         <h2>Proof-of-Work (майнинг)</h2>
 
         <blockquote>
             Найти такой hash, который начинается с N нулей
         </blockquote>
 
-        <h2>Иллюстрация 2</h2>
+        <h2>Иллюстрация 1</h2>
 
         <pre><code>
 nonce = 0 → hash = A93F...
@@ -248,7 +237,7 @@ public String calculateHash() {
 }
         </code></pre>
 
-        <h2>Иллюстрация 3</h2>
+        <h2>Иллюстрация 2</h2>
 
         <pre><code>
 hash = SHA256(previousHash + timeStamp + data + nonce)
@@ -285,7 +274,7 @@ public class PolyChain {
 }
         </code></pre>
 
-        <h2>Иллюстрация 4 (UML)</h2>
+        <h2>Иллюстрация 3 (UML)</h2>
 
         <pre><code>
 +------------------+
@@ -325,7 +314,7 @@ public static Boolean isChainValid() {
 }
         </code></pre>
 
-        <h2>Иллюстрация 5</h2>
+        <h2>Иллюстрация 4</h2>
 
         <pre><code>
 Block2.previousHash == Block1.hash ✔
